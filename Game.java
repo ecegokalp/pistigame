@@ -1,5 +1,4 @@
-package pisti;
-mport java.util.Random;
+import java.util.Random;
 import java.util.Scanner;
 public class Game {
 	private Player player1;
@@ -30,6 +29,7 @@ public class Game {
         System.out.println("-------GAME READY!-------");
     this.Shuffle();
     this.cut();
+    this.startGame();
     }
 
         public void Shuffle() {
@@ -178,7 +178,7 @@ public class Game {
                         System.out.print(showInfo);
                         choosenCard = input.nextInt();
 
-                        if (choosenCard >= player1.getCards().length || choosenCard < 0) {
+                        if (choosenCard > player1.getCardIdx() || choosenCard < 0) {
                             System.out.println("PLEASE SELECT VALID CARD");
                             continue;
                         } else {
@@ -188,10 +188,8 @@ public class Game {
 
                     this.addCardToBoard(player1.getCards()[choosenCard]);
                     player1.removeCard(choosenCard);
-                    if (this.boardIdx > 0
-                            && (this.compareCard(this.board[0], this.board[1]) || this.board[0].getRank() == "J")) {
-
-                        if (this.boardIdx == 1) {
+                 if (this.boardIdx > 0&& (this.compareCard(this.board[0], this.board[1])|| this.board[0].getRank() == "J")) {
+                    	if (this.boardIdx == 1) {
                             player1.addScore(10);
                             player1.addNumOfCards(2);
                         } else {
@@ -201,12 +199,80 @@ public class Game {
                         this.removeBoard();
                     }
                 }
+               
+                   if (player2.getCardIdx() != -1) {
+                    System.out.println("This is computer's turn");
+                    Random ran = new Random();
 
-    
+                    int computersChoice = ran.nextInt(player2.getCardIdx() + 1);
+
+                    if (this.boardIdx != -1 && player2.isMatchCard(this.board[0]) != -1) {
+                        this.addCardToBoard(player2.getCards()[player2.isMatchCard(this.board[0])]);
+                        player2.removeCard(player2.isMatchCard(this.board[0]));
+                    }
+                      else {
+                        this.addCardToBoard(player2.getCards()[computersChoice]);
+                        player2.removeCard(computersChoice);
+                    }
+                    
+                    
+                    if (this.boardIdx > 0 && (this.compareCard(this.board[0], this.board[1])|| this.board[0].getRank()== "J")){
+                        if (this.boardIdx == 1) {
+                            player2.addScore(10);
+                            player2.addNumOfCards(2);
+                            
+                        } else {
+                            player2.addScore(this.calculatePointOnBoard());
+                            player2.addNumOfCards(this.boardIdx + 1);
+                        }
+                        this.removeBoard();
+                    }
+            }  
             }
-
-
         }
-    
+          
+        if(this.boardIdx>-1) {
+        	for(int i=29;i<52;i++) {
+        		if(i%2==0) {
+        	if(this.board[this.boardIdx]==this.deck[i]) {
+        		player2.addScore(this.calculatePointOnBoard());
+        		player2.addNumOfCards(this.boardIdx+1);
+        	}
+        		}
+        	else if(i%2==1){
+        		if(this.board[this.boardIdx]==this.deck[i]){
+            player1.addScore(this.calculatePointOnBoard());
+        	player1.addNumOfCards(this.boardIdx+1);
+        }
+        }
+        }
+        }
+        
+        if (player1.getNumOfCards() > player2.getNumOfCards()) {
+            player1.addScore(3);
+        } else {
+            player2.addScore(3);
+        }
+
+        
+
+        
+        if (player1.getScore() > player2.getScore()) {
+            System.out.println(player1.getName() + "  wins! " + "Score: " + player1.getScore());
+            System.out.println(player2.getName() + " " + "Score: " + player2.getScore());
+        } else if ((player2.getScore() > player1.getScore())) {
+            System.out.println(player2.getName() + " wins! " + "Score: " + player2.getScore());
+            System.out.println(player1.getName() + " " + "Score: " + player1.getScore());
+        } else {
+            System.out.println("There is no winner!");
+            System.out.println(player1.getName() + " " + "Score: " + player1.getScore());
+            System.out.println(player2.getName() + " " + "Score: " + player2.getScore());
+        }
+
+        
+
+        System.out.println("GAME OVER!");
+
     }
 }
+

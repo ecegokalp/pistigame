@@ -17,7 +17,7 @@ public class Player {
         
     }
     public void showCards() {
-    	 for (int i = 0; i < this.cardIdx; i++) {
+    	 for (int i = 0; i <= this.cardIdx; i++) {
             System.out.print(i+") "+cards[i].getCardInfo()+ " | ");
         }
     }
@@ -30,6 +30,10 @@ public class Player {
     public void addNumOfCards(int numOfCards) {
         this.numOfCards += numOfCards;
     }
+    public int getNumOfCards() {
+        return this.numOfCards;
+    }
+
 
     public void removeCard(int removeIdx) {
         
@@ -42,8 +46,25 @@ public class Player {
             }
         }
         cards = arr_new;
+        this.cardIdx--;
     }// use this method if you want to remove spesific card in your hand
- 
+
+
+    public int isMatchCard(Card x) {
+        for (int i = 0; i <= this.cardIdx; i++) {
+            if (x.getRank() == this.cards[i].getRank() || this.cards[i].getRank() == "J") {
+                return i;
+            }
+        }
+        return -1;
+    }
+      
+   
+    
+    
+    
+    
+    
     public int getCardIdx() {
     	 return cardIdx;
     }
@@ -72,3 +93,4 @@ public class Player {
     }
     																																																																																																																																																																																
 }
+

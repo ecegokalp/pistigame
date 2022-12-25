@@ -8,6 +8,6 @@ public class Main {
 	    	Player player1 = new Player(name);
 	        Player player2 = new Player("computer");
 	        Game newGame = new Game(player1, player2);
-	    	newGame.startGame();
+	    	
 }
 }
